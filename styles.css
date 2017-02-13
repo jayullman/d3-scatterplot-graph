@@ -8,19 +8,36 @@ body {
   margin: 0 auto;
 }
 
+/* create transparent background image trick */
+/* courtesy of: https://css-tricks.com/snippets/css/transparent-background-images/ */
+.graph-container::after {
+  content: "";
+  background-image: url('biking.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
 .graph {
   display: block;
   border: 2px solid gray;
-  
+  border-radius: 10px;
+  box-shadow: -3px 3px 10px #555;
 }
 
 .legend-box {
   position: absolute;
-  right: 5px;
-  top: 75%;
+  right: 10px;
+  top: 80%;
   transform: translateY(-50%);
   width: 90px;
-  height: 70px;
+  height: 60px;
   border: 2px solid #333;
   border-radius: 10px;
   box-shadow: -3px 3px 10px #555;
@@ -41,4 +58,22 @@ body {
   /*.legend-box {
     width: 100px;
   }*/
-}*/
+/*}*/
+
+.tooltip {
+  font-size: .75em;
+  opacity: 0;
+  position: absolute;
+  z-index: 100;
+  left: 50px;
+  top: 50px;
+  border-radius: 5px;
+  background-color: #f2ffd3;
+  transition: opacity 100ms;
+  box-shadow: -3px 3px 10px #444;
+  border: 2px solid #444;
+}
+
+.show-tooltip {
+  opacity: 1;
+}

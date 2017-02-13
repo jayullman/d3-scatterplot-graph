@@ -25,12 +25,12 @@ axios.get('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/m
   });
 
 function getSVGWidth() {
-  width = window.innerWidth * .9;
+  width = window.innerWidth * .85;
   // create max and min-widths
   if (width > 750) {
     width = 750;
-    } else if (width < 320) {
-      width = 320;
+    } else if (width < 310) {
+      width = 310;
     }
   return width;
 }
@@ -58,6 +58,22 @@ window.onload = function() {
     drawChart();
   });
 };   
+
+function mouseOverHandler(d) {
+  d3.select('.tooltip')
+    .attr('style', 'left: ' + (d3.event.pageX - (tooltipWidth / 2))
+      + 'px; top:  ' + (d3.event.pageY - tooltipHeight - 25) + 'px;' 
+      + 'height: ' + tooltipHeight + 'px; width: ' + tooltipWidth + 'px;')
+    .classed('show-tooltip', true);
+
+  // d3.select('.gdp-label')
+  //   .text('$' + d[1].toLocaleString('en-US', { currency: 'USD', minimumFractionDigits: 2 }) + ' Billion');
+
+  // var date = new Date(d[0])
+  // d3.select('.date-label')
+  //   .text(date.getFullYear() + ', ' + MONTHS[date.getMonth()]);
+}
+
 
 function drawChart() {
 
@@ -106,6 +122,15 @@ function drawChart() {
     .attr('r', circleRadius)
     .attr('fill', function(d) {
       return d.Doping === "" ? 'green' : 'red';
+    })
+
+    // add mouseover event to each bar
+    .on('mouseenter', mouseOverHandler)
+    .on('mousemove', mouseOverHandler)
+    .on('mouseover', mouseOverHandler)
+    .on('mouseleave', function() {
+      d3.select('.tooltip')
+        .classed('show-tooltip', false);
     });
     
     // create labels for each datapoint
@@ -177,8 +202,6 @@ function drawChart() {
   var legend = d3.select('.graph-container')
     .append('div')
     .attr('class', 'legend-box');
-
-    console.log(legend);
 
   legend.append('svg')
     .attr('width', '300')
