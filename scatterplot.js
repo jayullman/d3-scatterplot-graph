@@ -2,11 +2,16 @@
 var dataset = [];
 
 var svgWidth = getSVGWidth();
-var svgHeight = 400;
+var svgHeight = 500;
 var svgPadding = 40;
+var svgPaddingTop = 20;
 var svgPaddingLeft = 80;
+var svgPaddingRight = 110;
+var svgPaddingBottom = 40;
 var tooltipHeight = 50;
 var tooltipWidth = 100;
+
+var circleRadius = 3;
 
 // use axios library for ajax request
 axios.get('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
@@ -21,10 +26,11 @@ axios.get('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/m
 
 function getSVGWidth() {
   width = window.innerWidth * .9;
-  if (width > 700) {
-    width = 700;
-    } else if (width < 350) {
-      width = 350;
+  // create max and min-widths
+  if (width > 750) {
+    width = 750;
+    } else if (width < 320) {
+      width = 320;
     }
   return width;
 }
@@ -46,7 +52,9 @@ window.onload = function() {
   // resize width of SVG when window resizes
   window.addEventListener('resize', function(event) {
     svgWidth = getSVGWidth();
+    // remove old chart and legend box on resizing
     d3.select('svg').remove();
+    d3.select('.legend-box').remove();
     drawChart();
   });
 };   
@@ -62,10 +70,65 @@ function drawChart() {
     .attr('height', svgHeight)
     .attr('class', 'graph');
 
+  
+
+  // find min and max finishing times
+  // is this necessary?
+  // var maxGDP = d3.max(dataset, function(d) { return d[1] });
+  // var minGDP = d3.min(dataset, function(d) { return d[1] });
+
+
+  // create x scale
+  // add slight padding to max value
+  xScale = d3.scaleLinear()
+    .domain([dataset[dataset.length-1].Seconds + 5, dataset[0].Seconds])
+    .range([svgPaddingLeft, svgWidth - svgPaddingRight]);
+
+  console.log(xScale.domain());
+
+  // create y scale
+  // add slight padding to max value
+  yScale = d3.scaleLinear()
+    .domain([dataset[dataset.length-1].Place + 1, dataset[0].Place])
+    .range([svgHeight - svgPaddingBottom, svgPadding]);
+
+  // create data points/append circles to svg
+  svg.selectAll('circle')
+    .data(dataset)
+    .enter()
+    .append('circle')
+    .attr('cx', function(d) {
+      return xScale(d.Seconds);
+    })
+    .attr('cy', function(d) {
+      return yScale(d.Place);
+    })
+    .attr('r', circleRadius)
+    .attr('fill', function(d) {
+      return d.Doping === "" ? 'green' : 'red';
+    });
+    
+    // create labels for each datapoint
+
+  svg.selectAll('text')
+    .data(dataset)
+    .enter()
+    .append('text')
+    .text(function(d) {
+      return d.Name;
+    })
+    .attr('x', function(d) {
+      return xScale(d.Seconds) + 5;
+    })
+    .attr('y', function(d) {
+      return yScale(d.Place) + 3;
+    })
+    .attr('style', 'font-size: 11px');
+
   // add graph title
   svg.append('text')
     .attr('x', svgWidth / 2 )
-    .attr('y', svgPadding)
+    .attr('y', 20)
     .attr('class', 'graph-title')
     .style('text-anchor', 'middle')
     .text('Doping Allegations vs. Finishing Time');
@@ -85,38 +148,75 @@ function drawChart() {
     .text('Ranking')
     .attr('transform', 'rotate(-90)');
 
-  // find min and max finishing times
-  // is this necessary?
-  // var maxGDP = d3.max(dataset, function(d) { return d[1] });
-  // var minGDP = d3.min(dataset, function(d) { return d[1] });
+  // create x and y axis
+  var xAxis = d3.axisBottom(xScale);
+  xAxis.tickSizeOuter(0);
+  //xAxis.tickFormat(d3.timeFormat('%Y'))
+    
+  svg.append('g')
+    .attr('transform', 'translate(2,' + (svgHeight - svgPadding) + ')')
+    .style('font-size', function() {
+      if (svgWidth < 400) {
+        return '6px';
+      } else if ( svgWidth < 500) {
+        return '8px';
+      } else {
+        return '12px';
+      }
+    })
+    .call(xAxis);
 
+  var yAxis = d3.axisLeft(yScale);
+  yAxis.tickSizeOuter(0);
 
-  // create x scale
-  xScale = d3.scaleLinear()
-    .domain([dataset[dataset.length-1].Seconds, dataset[0].Seconds])
-    .range([svgPaddingLeft, svgWidth - svgPadding]);
+  svg.append('g')
+    .attr('transform', 'translate(' + svgPaddingLeft + ',0)')
+    .call(yAxis);
 
-  console.log(xScale.domain());
+  // create legend box
+  var legend = d3.select('.graph-container')
+    .append('div')
+    .attr('class', 'legend-box');
 
-  // create y scale
-  yScale = d3.scaleLinear()
-    .domain([dataset[dataset.length-1].Place, dataset[0].Place])
-    .range([svgHeight - svgPadding, svgPadding]);
+    console.log(legend);
 
-  // create data points/append circles to svg
-  d3.select("svg").selectAll('circle')
-    .data(dataset)
-    .enter()
+  legend.append('svg')
+    .attr('width', '300')
+    .attr('height', '80')
+
+  legend.select('svg')
     .append('circle')
-    .attr('cx', function(d) {
-      return xScale(d.Seconds);
-    })
-    .attr('cy', function(d) {
-      return yScale(d.Place);
-    })
-    .attr('r', 3)
-    .attr('fill', function(d) {
-      return d.Doping === "" ? 'green' : 'red';
-    })
+      .attr('cx', 10)
+      .attr('cy', 30)
+      .attr('r', circleRadius)
+      .attr('fill', 'green')
 
+  legend.select('svg')
+    .append('circle')
+      .attr('cx', 10)
+      .attr('cy', 50)
+      .attr('r', circleRadius)
+      .attr('fill', 'red')    
+
+  legend.select('svg')
+    .append('text')
+      .attr('x', 25)
+      .attr('y', 14)
+     // .classed('legend-text', true)
+      .style('font-size', '14px')
+      .text('Legend');
+    
+  legend.select('svg')
+    .append('text')
+      .attr('x', 14)
+      .attr('y', 33)
+      .classed('legend-text', true)
+      .text('No allegation');
+  
+  legend.select('svg')
+    .append('text')
+      .attr('x', 14)
+      .attr('y', 53)
+      .classed('legend-text', true)      
+      .text('Allegation');
 }

@@ -1,0 +1,44 @@
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.graph-container {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.graph {
+  display: block;
+  border: 2px solid gray;
+  
+}
+
+.legend-box {
+  position: absolute;
+  right: 5px;
+  top: 75%;
+  transform: translateY(-50%);
+  width: 90px;
+  height: 70px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  box-shadow: -3px 3px 10px #555;
+}
+
+.legend-text {
+  font-size: 10px;
+}
+
+/* If window width is too small, remove legend div */
+/*@media (max-width: 350px) {
+  .legend-box {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  /*.legend-box {
+    width: 100px;
+  }*/
+}*/
