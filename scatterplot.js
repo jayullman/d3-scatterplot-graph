@@ -84,6 +84,13 @@ function mouseOverHandler(d) {
       +  (d.Doping ? d.Doping : 'No doping allegations'));
 }
 
+// function will take seconds and return minutes behind the fastest time
+function convertSecondsIntoMinutesBehindFastest(seconds) {
+  var fastestTimeInSeconds = d3.min(dataset, function(d) { return d.Seconds });
+
+  return seconds - fastestTimeInSeconds;
+}
+
 
 function drawChart() {
 
@@ -96,18 +103,16 @@ function drawChart() {
     .attr('height', svgHeight)
     .attr('class', 'graph');
 
-  
-
   // find min and max finishing times
   // is this necessary?
   // var maxGDP = d3.max(dataset, function(d) { return d[1] });
   // var minGDP = d3.min(dataset, function(d) { return d[1] });
-
-
+  
   // create x scale
   // add slight padding to max value
   xScale = d3.scaleLinear()
-    .domain([dataset[dataset.length-1].Seconds + 5, dataset[0].Seconds])
+    .domain([convertSecondsIntoMinutesBehindFastest(dataset[dataset.length-1].Seconds) + 5, 
+      convertSecondsIntoMinutesBehindFastest(dataset[0].Seconds)])
     .range([svgPaddingLeft, svgWidth - svgPaddingRight]);
 
   // create y scale
@@ -122,7 +127,7 @@ function drawChart() {
     .enter()
     .append('circle')
     .attr('cx', function(d) {
-      return xScale(d.Seconds);
+      return xScale(convertSecondsIntoMinutesBehindFastest(d.Seconds));
     })
     .attr('cy', function(d) {
       return yScale(d.Place);
@@ -153,7 +158,7 @@ function drawChart() {
       return d.Name;
     })
     .attr('x', function(d) {
-      return xScale(d.Seconds) + 5;
+      return xScale(convertSecondsIntoMinutesBehindFastest(d.Seconds)) + 5;
     })
     .attr('y', function(d) {
       return yScale(d.Place) + 3;
@@ -184,9 +189,12 @@ function drawChart() {
     .attr('transform', 'rotate(-90)');
 
   // create x and y axis
-  var xAxis = d3.axisBottom(xScale);
-  xAxis.tickSizeOuter(0);
-  //xAxis.tickFormat(d3.timeFormat('%Y'))
+  var xAxis = d3.axisBottom(xScale)
+    .tickSizeOuter(0)
+    // use numeral.js to format axis to display in mm:ss format
+    .tickFormat(function(d) {
+      return numeral(d).format('00:00');
+    });
     
   svg.append('g')
     .attr('transform', 'translate(2,' + (svgHeight - svgPadding) + ')')
