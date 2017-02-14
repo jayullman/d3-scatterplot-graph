@@ -193,7 +193,8 @@ function drawChart() {
     .tickSizeOuter(0)
     // use numeral.js to format axis to display in mm:ss format
     .tickFormat(function(d) {
-      return numeral(d).format('00:00');
+      // use slice to adjust format from 00:00:00 to 0:00
+      return numeral(d).format('0:0').slice(3);
     });
     
   svg.append('g')
