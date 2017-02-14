@@ -17,7 +17,6 @@ var circleRadius = 4;
 axios.get('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
   .then(function (response){
     dataset = response.data;
-    console.log(response.data);
     drawChart();
   })
   .catch(function (error) {
@@ -68,13 +67,6 @@ function mouseOverHandler(d) {
 
   d3.select(d3.event.target)
     .attr('r', circleRadius + 2);
-
-  // d3.select('.gdp-label')
-  //   .text('$' + d[1].toLocaleString('en-US', { currency: 'USD', minimumFractionDigits: 2 }) + ' Billion');
-
-  // var date = new Date(d[0])
-  // d3.select('.date-label')
-  //   .text(date.getFullYear() + ', ' + MONTHS[date.getMonth()]);
   
   d3.select('.tooltip-info')
     .html(d.Name + ': ' + d.Nationality + '<br>' 

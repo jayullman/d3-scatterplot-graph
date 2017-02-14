@@ -1,5 +1,5 @@
 body {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   text-align: center;
   font-size: 16px;
 }
@@ -69,10 +69,6 @@ body {
   opacity: 1;
 }
 
-.tooltip-name {
-
-}
-
 .header {
   height: 70px;
 }
@@ -86,6 +82,11 @@ h1 {
   font-size: .8em;
 }
 
+h3 {
+font-size: 1em;
+margin-bottom: 5px;
+text-align: left;
+}
 
 .header, .footer {
   font-family: 'Lato', sans-serif;
@@ -95,6 +96,37 @@ h1 {
   padding: 10px;
   color: #fff;
   /*max-width: 700px;*/
+}
+
+
+.about-section {
+  /*max-width: 750px;*/
+  margin: 20px auto 0 auto;
+  padding: 10px;
+  text-align: center;
+  background-color: #d7d7d7;
+}
+
+.about-section p {
+  text-align: left;
+  max-width: 700px;
+  margin: 0 auto 10px auto;
+  padding: 10px 20px;
+}
+
+.list-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+
+.user-story-list {
+  margin: 0 auto;
+}
+
+li {
+  text-align: left;
+  margin-bottom: 5px;
 }
 
 a {
@@ -115,6 +147,10 @@ a:hover {
   color: #fff;  
 }
 
+.tagline {
+  margin-bottom: 10px;
+}
+
 /* For smaller screens */
 @media (max-width: 380px) {
   h1 {
@@ -122,5 +158,8 @@ a:hover {
   }
   .header {
     height: 50px; 
+  }
+  .about-section {
+    font-size: .75em;
   }
 }

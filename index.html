@@ -5,7 +5,7 @@
   <title>D3.js Scatterplot Graph</title>
   <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css' rel='stylesheet'>
   <link href='styles.css' rel='stylesheet'>
-  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Abril+Fatface|Lato" rel="stylesheet">
   <script src="https://use.fontawesome.com/f6ca9e3552.js"></script>
   <script src="numeral.min.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -26,17 +26,21 @@
   <div class="graph-container"></div>
 
   <div class="about-section">
-    <h3>About this project</h3>
-
     <p>
-      Project info here
+      This projects requests JSON data and utilizes the D3.js data visualization library to bind the
+      data to data points. Hovering over a data point will display a tooltip containing additional
+      information including any doping allegations if available.
     </p>
-
-    <h4>User Story Requirements</h4>
-    <ol class="user-story-list">
-    <li></li>
-    <li></li>
-    </ol>
+    <p>
+      Numeral.js was used to format the time in seconds into minutes for use along the x-axis.
+    </p>
+    <div class="list-container">
+      <h3>User Story Requirements:</h3>
+      <ol class="user-story-list">
+        <li>I can see performance time visualized in a scatterplot graph</li>
+        <li>I can mouse over a plot to see a tooltip with additional details</li>
+      </ol>
+    </div>
   </div>
   <div class="footer">
     <div class="tagline">Created by Jay</div>
