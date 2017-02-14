@@ -12,8 +12,7 @@ body {
 
 /* create transparent background image trick */
 /* courtesy of: https://css-tricks.com/snippets/css/transparent-background-images/ */
-.graph-container::after {
-  content: "";
+.image-container {
   background-image: url('biking.jpg');
   background-size: cover;
   background-position: center;
