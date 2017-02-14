@@ -8,10 +8,10 @@ var svgPaddingTop = 20;
 var svgPaddingLeft = 80;
 var svgPaddingRight = 110;
 var svgPaddingBottom = 40;
-var tooltipHeight = 50;
-var tooltipWidth = 100;
+var tooltipHeight = 100;
+var tooltipWidth = 200;
 
-var circleRadius = 3;
+var circleRadius = 4;
 
 // use axios library for ajax request
 axios.get('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
@@ -44,10 +44,10 @@ window.onload = function() {
 
   // labels within tooltip that will display gdp and date data
   tooltip.append('div')
-    .attr('class', 'gdp-label');
+    .attr('class', 'tooltip-info');
 
-  tooltip.append('div')
-    .attr('class', 'date-label');
+  // tooltip.append('div')
+  //   .attr('class', 'date-label');
   
   // resize width of SVG when window resizes
   window.addEventListener('resize', function(event) {
@@ -62,9 +62,12 @@ window.onload = function() {
 function mouseOverHandler(d) {
   d3.select('.tooltip')
     .attr('style', 'left: ' + (d3.event.pageX - (tooltipWidth / 2))
-      + 'px; top:  ' + (d3.event.pageY - tooltipHeight - 25) + 'px;' 
+      + 'px; top:  ' + (d3.event.pageY - tooltipHeight - 30) + 'px;' 
       + 'height: ' + tooltipHeight + 'px; width: ' + tooltipWidth + 'px;')
     .classed('show-tooltip', true);
+
+  d3.select(d3.event.target)
+    .attr('r', circleRadius + 2);
 
   // d3.select('.gdp-label')
   //   .text('$' + d[1].toLocaleString('en-US', { currency: 'USD', minimumFractionDigits: 2 }) + ' Billion');
@@ -72,6 +75,13 @@ function mouseOverHandler(d) {
   // var date = new Date(d[0])
   // d3.select('.date-label')
   //   .text(date.getFullYear() + ', ' + MONTHS[date.getMonth()]);
+  
+  d3.select('.tooltip-info')
+    .html(d.Name + ': ' + d.Nationality + '<br>' 
+      + 'Year: ' + d.Year + '<br>'
+      + 'Place: ' + d.Place + '<br>'
+      + 'Time: ' + d.Time + '<br><br>'
+      +  (d.Doping ? d.Doping : 'No doping allegations'));
 }
 
 
@@ -100,8 +110,6 @@ function drawChart() {
     .domain([dataset[dataset.length-1].Seconds + 5, dataset[0].Seconds])
     .range([svgPaddingLeft, svgWidth - svgPaddingRight]);
 
-  console.log(xScale.domain());
-
   // create y scale
   // add slight padding to max value
   yScale = d3.scaleLinear()
@@ -125,12 +133,14 @@ function drawChart() {
     })
 
     // add mouseover event to each bar
-    .on('mouseenter', mouseOverHandler)
-    .on('mousemove', mouseOverHandler)
+    //.on('mouseenter', mouseOverHandler)
+    //.on('mousemove', mouseOverHandler)
     .on('mouseover', mouseOverHandler)
     .on('mouseleave', function() {
       d3.select('.tooltip')
         .classed('show-tooltip', false);
+      d3.select(d3.event.target)
+        .attr('r', circleRadius);
     });
     
     // create labels for each datapoint
@@ -231,14 +241,14 @@ function drawChart() {
     
   legend.select('svg')
     .append('text')
-      .attr('x', 14)
+      .attr('x', 15)
       .attr('y', 33)
       .classed('legend-text', true)
       .text('No allegation');
   
   legend.select('svg')
     .append('text')
-      .attr('x', 14)
+      .attr('x', 15)
       .attr('y', 53)
       .classed('legend-text', true)      
       .text('Allegation');

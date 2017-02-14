@@ -1,5 +1,6 @@
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;
 }
 
 .graph-container {
@@ -61,14 +62,16 @@ body {
 /*}*/
 
 .tooltip {
-  font-size: .75em;
+  font-size: .7em;
+  padding: 3px;
   opacity: 0;
   position: absolute;
   z-index: 100;
   left: 50px;
   top: 50px;
   border-radius: 5px;
-  background-color: #f2ffd3;
+  background-color: #444;
+  color: #fff;
   transition: opacity 100ms;
   box-shadow: -3px 3px 10px #444;
   border: 2px solid #444;
@@ -76,6 +79,10 @@ body {
 
 .show-tooltip {
   opacity: 1;
+}
+
+.tooltip-name {
+
 }
 
 
