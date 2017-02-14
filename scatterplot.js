@@ -204,7 +204,7 @@ function drawChart() {
     .attr('class', 'legend-box');
 
   legend.append('svg')
-    .attr('width', '300')
+    .attr('width', '100')
     .attr('height', '80')
 
   legend.select('svg')
