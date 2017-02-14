@@ -1,0 +1,23 @@
+{
+  "name": "d3-scatterplot-graph",
+  "version": "1.0.0",
+  "description": "This projects requests JSON data and utilizes the D3.js data visualization library to bind the data to data points. Hovering over a data point will display a tooltip containing additional information including any doping allegations if available.",
+  "main": "scatterplot.js",
+  "dependencies": {
+    "lite-server": "^2.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/libeja/d3-scatterplot-graph.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/libeja/d3-scatterplot-graph/issues"
+  },
+  "homepage": "https://github.com/libeja/d3-scatterplot-graph#readme"
+}
